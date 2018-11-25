@@ -1,23 +1,24 @@
 #include "Tree/Tree.cpp"
+#include "Winning.cpp"
+#include "GameOver.cpp"
 
 #define N 3
 
 class Game {
 
-    int flag;
     Tree movesTree;
+    Winning winning;
+    GameOver gameOver;
     tree* decisionTree;
     tree* state;
-    int gameBoard[N][N], choice;
+    int **gameBoard, choice;
+    int flag;
     public:
         Game();
         void showBoard();
         void instructions();
         void play();
-        int gameOver();
-        int isWinning(int);
-        int isWinningOrthogonal(int);
-        int isWinningDiagonal(int);
+        void randomMove();
         void initialMove(int);
-           
+        int isMoveValid(int,int);
 };

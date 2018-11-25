@@ -7,13 +7,19 @@ using namespace std;
 
 Game :: Game() {
 
+    gameBoard = new int* [N];
     for(int i = 0; i < N; i++)
+    {
+        gameBoard[i] = new int[N];    
         for(int j = 0; j < N; j++)
             gameBoard[i][j] = 0;
-
+    }
     decisionTree = movesTree.returnHead();
     state = decisionTree;
     movesTree.createDecisionTree1();
+    movesTree.createDecisionTree2();
+    winning.setGameBoard(gameBoard);
+    gameOver.setGameBoard(gameBoard);
     flag = 0;
 }
 
@@ -70,98 +76,33 @@ void Game :: instructions() {
 
 }
 
-int Game :: isWinningOrthogonal(int player) {
 
-    int countHorizontal, countVertical, posHorizontal, posVertical, i, j; 
+
+void Game :: randomMove() {
     
-    for(i = 0; i < N; i++) {
+    int i, j;
 
-        countHorizontal = 0;
-        countVertical = 0;
-        posHorizontal = -1;
-        posVertical = -1;
-        
-        for(j = 0;j < N; j++) {
-            if(gameBoard[i][j] == player)
-                countHorizontal++;
-            else if(gameBoard[i][j] == 0)
-                posHorizontal = j;
-            if(gameBoard[j][i] == player)
-                countVertical++;
-            else if(gameBoard[j][i] == 0)
-                posVertical = j;
-        }
-
-        if(countHorizontal == 2 && posHorizontal!=-1) {
-            gameBoard[i][posHorizontal] = 1;
-            return 1;
-        }
-
-        if(countVertical == 2 && posVertical!=-1) {
-            gameBoard[posVertical][i] = 1;
-            return 1;
-        }
-
+    for(i = 0; i < N; i++)
+    {
+        for(j = 0;j < N; j++)
+            if(gameBoard[i][j] == 0)
+            {
+                gameBoard[i][j] = 1;
+                break;
+            }
+        if(j != N)
+            break;
     }
 
-    return 0;
 }
-
-int Game :: isWinningDiagonal(int player) {
-
-    int countDiagonal1, countDiagonal2, posDiagonal1, posDiagonal2, i, j; 
-
-    countDiagonal1 = 0;
-    countDiagonal2 = 0;
-    posDiagonal1 = -1;
-    posDiagonal2 = -1;
-
-    for(i = 0; i < N; i++) {
-        
-        if(gameBoard[i][i] == player)
-            countDiagonal1++;
-        else if(gameBoard[i][i] == 0)
-            posDiagonal1 = i;
-        if(gameBoard[i][N-i-1] == player)
-            countDiagonal2++;
-        else if(gameBoard[i][N-i-1] == 0)
-            posDiagonal2 = i;
-
-    }
-
-    if(countDiagonal1 == 2 && posDiagonal1!=-1) {
-        gameBoard[posDiagonal1][posDiagonal1] = 1;
-        return 1;
-    }
-
-    if(countDiagonal2 == 2 && posDiagonal2!=-1) {
-        gameBoard[posDiagonal2][N-posDiagonal2-1] = 1;
-        return 1;
-    }
-
-    return 0;
-}
-
-int Game :: isWinning(int player) {
-
-    if(isWinningOrthogonal(player)) 
-        return 1;
-
-    if(isWinningDiagonal(player)) 
-        return 1;
-
-    return 0;
-}
-
 void Game :: play() {
 
-    int row, column, i, j;
+    int row, column, i, j, result;
     initialMove(1);
-    for(int i = 2; i < N*N; i++) {
+    while(1) {
 
-        if(!isWinning(1) && !isWinning(2))
-        {
-            
+        if(!winning.isWinning(1) && !winning.isWinning(2))
+        {            
             if(state!=NULL) {
                 if(!flag)
                     gameBoard[state->row][state->column] = 1;
@@ -170,75 +111,25 @@ void Game :: play() {
                 }
                 state = state->link[0];
             }
-            else {
-                
-                for(i = 0; i < N; i++)
-                {
-                    for(j = 0;j < N; j++)
-                        if(gameBoard[i][j] == 0)
-                        {
-                            gameBoard[i][j] = 1;
-                            break;
-                        }
-                    if(j != N)
-                        break;
-                }
-            }
+            else
+                randomMove();
         }
         showBoard();
-        if(gameOver()) {
-            cout<<"Computer Wins!\n";
+        if(result = gameOver.gameOver()) {
+
+            if(result == 1)
+                cout<<"Computer Wins!\n";
+            else
+                cout<<"Draw!\n";
             break;
         }
         cout<<"Enter your move :: ";
         cin>>row>>column;
         gameBoard[row][column] = 2;
         showBoard();
-        if(gameOver()) {
+        if(gameOver.gameOver()) {
             cout<<"Player Wins!\n";
             break;
         } 
     }
-}
-
-int Game :: gameOver() {
-    
-    int i, j;
-
-    for(i = 0; i < N-1; i++)
-        if(gameBoard[i][i] == gameBoard[i+1][i+1] && gameBoard[i][i]!=0)
-            continue;
-        else
-            break;
-        if(i == N-1)
-            return gameBoard[0][0];
-    
-    for(i = 0; i < N-1; i++)
-        if(gameBoard[i][N-i-1] == gameBoard[i+1][N-i-2] && gameBoard[i][N-i-1]!=0)
-            continue;
-        else
-            break;
-        if(i == N-1)
-            return gameBoard[i][N-i-1];
-    
-    for(i = 0; i < N; i++) {
-        
-        for(j = 0; j < N-1; j++)
-            if(gameBoard[i][j] == gameBoard[i][j+1] && gameBoard[i][j]!=0)
-                continue;
-            else
-                break;
-        if(j == N-1)
-            return gameBoard[i][j-1];
-        
-        for(j = 0; j < N-1; j++)
-            if(gameBoard[j][i] == gameBoard[j+1][i] && gameBoard[j][i]!=0)
-                continue;
-            else 
-                break;
-        if(j == N-1)
-            return gameBoard[j-1][i];
-
-    }
-    return 0;
 }
