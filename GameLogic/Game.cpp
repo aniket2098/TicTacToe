@@ -14,7 +14,8 @@ Game :: Game() {
         for(int j = 0; j < N; j++)
             gameBoard[i][j] = 0;
     }
-    decisionTree = movesTree.returnHead();
+    decisionTree = movesTree.returnHead1();
+    decisionTree2 = movesTree.returnHead2();
     state = decisionTree;
     movesTree.createDecisionTree1();
     movesTree.createDecisionTree2();
@@ -132,4 +133,59 @@ void Game :: play() {
             break;
         } 
     }
+}
+
+void Game :: play1() {
+
+    int row, column, i, j, result;
+    state = decisionTree2;
+    tree* temp =state;
+
+    while(1) {
+        
+        cout<<"Enter your move :: ";
+        cin>>row>>column;
+
+        gameBoard[row][column] = 2;
+
+        showBoard();
+
+            if(result = gameOver.gameOver()) {
+
+            if(result == 1)
+                cout<<"Computer Wins!\n";
+            else
+                cout<<"Draw!\n";
+            break;
+        }
+        if(!winning.isWinning(1) && !winning.isWinning(2))
+        {
+            if(state != NULL && !flag) {
+
+                for(i = 0; i < 3; i++) {
+
+                    state = temp->link[i];
+                    if(state->row == row && state->column == column)
+                        break;
+                    
+                }
+                flag = 1;
+                // state = state->link[i];
+            }
+            if(flag && state != NULL) {
+                
+                flag = 0;
+                state = state->link[0];
+                gameBoard[state->row][state->column] = 1;      
+                temp = state; 
+            }
+            else
+                randomMove();
+            // gameBoard[state->row][state->column] = 1;
+        }
+
+        showBoard();
+
+    }
+
 }

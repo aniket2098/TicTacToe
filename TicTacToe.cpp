@@ -5,7 +5,7 @@ int main() {
     
     Game game;
     game.instructions();
-    game.play();
+    game.play1();
 
     return 0;
 }

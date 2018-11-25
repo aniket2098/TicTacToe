@@ -114,8 +114,15 @@ void Tree :: createDecisionTree2() {
     createNodes2(decisionTree2->link[2],row3,column3);
 
 }
-tree* Tree :: returnHead() {
+
+tree* Tree :: returnHead1() {
 
     return decisionTree;
+
+}
+
+tree* Tree :: returnHead2() {
+
+    return decisionTree2;
 
 }
