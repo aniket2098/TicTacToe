@@ -76,28 +76,6 @@ tree* Tree :: createNodes2(tree* head, int* row, int* column) {
     
     }
 
-    // temp = head->link[1];
-    // temp->row = row[3];
-    // temp->column = column[3];
-    // temp->link = new tree* [1];
-    // temp->link[0] = new tree;
-    // temp = temp->link[0];
-    // temp->row = row[6];
-    // temp->column = column[6];
-    // temp->link = new tree* [1];
-    // temp->link[0] = NULL;
-
-    // temp = head->link[2];
-    // temp->row = row[4];
-    // temp->column = column[4];
-    // temp->link = new tree* [1];
-    // temp->link[0] = new tree;
-    // temp = temp->link[0];
-    // temp->row = row[7];
-    // temp->column = column[7];
-    // temp->link = new tree* [1];
-    // temp->link[0] = NULL;
-
 }
 
 void Tree :: createDecisionTree2() {

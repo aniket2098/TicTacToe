@@ -16,12 +16,13 @@ class Game {
     int flag;
     public:
         Game();
+        void computerFirst();
+        void playerFirst();
         void showBoard();
         void instructions();
-        void play();
-        void play1();
         void randomMove();
         void initialMove(int);
+        void rotation(int*,int*,int,int);
         int isMoveValid(int,int);
         int displayResult();
 };

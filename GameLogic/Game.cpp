@@ -16,6 +16,7 @@ Game :: Game() {
         for(int j = 0; j < N; j++)
             gameBoard[i][j] = 0;
     }
+
     decisionTree = movesTree.returnHead1();
     decisionTree2 = movesTree.returnHead2();
     state = decisionTree;
@@ -24,37 +25,6 @@ Game :: Game() {
     winning.setGameBoard(gameBoard);
     gameOver.setGameBoard(gameBoard);
     flag = 0;
-}
-
-void Game :: initialMove(int player) {
-
-    int row, column, i;
-    gameBoard[0][0] = 1;
-    showBoard();
-    while(1)
-    {   
-        cout<<"Enter your move :: ";
-        cin>>row>>column;
-        if(isMoveValid(row,column))
-            break;
-        cout<<"Invalid move! Please Re-enter!\n";
-    }
-    gameBoard[row][column] = 2;    
-    showBoard();
-    if(column < row)
-        flag = 1;
-    for(i = 0; i < 5; i++) {
-        state = decisionTree->link[i];
-        if(!flag)
-        {
-            if(state->row == row && state->column == column)
-                break;
-        }else
-            if(state->row == column && state->column == row)
-                break;        
-    }
-    state = state->link[0];
-
 }
 
 void Game :: showBoard() {
@@ -81,8 +51,8 @@ void Game :: showBoard() {
 void Game :: instructions() {
 
     char choice;
-    cout<<"\n\n\tX :: Computer\n\n\tO :: Player\n\n\tEnter your input in the following format :: Row Column\n";
-
+    cout<<"\n\tX :: Computer\n\n\tO :: Player\n\n\tEnter your input in the following format :: Row Column\n";
+    showBoard();
 }
 
 int Game :: displayResult() {
@@ -91,9 +61,9 @@ int Game :: displayResult() {
     if(result = gameOver.gameOver()) {
 
         if(result == 1)
-            cout<<"Computer Wins!\n";
+            cout<<"\tComputer Wins!\n";
         else
-            cout<<"Draw!\n";
+            cout<<"\tDraw!\n";
         return 1;
     }
     return 0;
@@ -124,7 +94,39 @@ void Game :: randomMove() {
     }
 
 }
-void Game :: play() {
+
+void Game :: initialMove(int player) {
+
+    int row, column, i;
+    gameBoard[0][0] = 1;
+    showBoard();
+    while(1)
+    {   
+        cout<<"\tEnter your move :: ";
+        cin>>row>>column;
+        if(isMoveValid(row,column))
+            break;
+        cout<<"\tInvalid move! Please Re-enter!\n";
+    }
+    gameBoard[row][column] = 2;    
+    showBoard();
+    if(column < row)
+        flag = 1;
+    for(i = 0; i < 5; i++) {
+        state = decisionTree->link[i];
+        if(!flag)
+        {
+            if(state->row == row && state->column == column)
+                break;
+        }else
+            if(state->row == column && state->column == row)
+                break;        
+    }
+    state = state->link[0];
+
+}
+
+void Game :: computerFirst() {
 
     int row, column, i, j, result;
     initialMove(1);
@@ -144,32 +146,22 @@ void Game :: play() {
                 randomMove();
         }
         showBoard();
-        if(result = gameOver.gameOver()) {
-
-            if(result == 1)
-                cout<<"Computer Wins!\n";
-            else
-                cout<<"Draw!\n";
+        if(displayResult())
             break;
-        }
         while(1)
         {   
-            cout<<"Enter your move :: ";
+            cout<<"\tEnter your move :: ";
             cin>>row>>column;
             if(isMoveValid(row,column))
                 break;
-            cout<<"Invalid move! Please Re-enter!\n";
-    }
+            cout<<"\tInvalid move! Please Re-enter!\n";
+        }
         gameBoard[row][column] = 2;
-        showBoard();
-        if(gameOver.gameOver()) {
-            cout<<"Player Wins!\n";
-            break;
-        } 
+        showBoard(); 
     }
 }
 
-void rotation(int* x, int* y, int row, int column) {
+void Game :: rotation(int* x, int* y, int row, int column) {
 
     if(row != 0 || column != 0) {
 
@@ -195,7 +187,8 @@ void rotation(int* x, int* y, int row, int column) {
         }
     }
 }
-void Game :: play1() {
+
+void Game :: playerFirst() {
 
     int row, column, i, j,tempFlag = 0, x = 1, y = 0;
     state = decisionTree2;
@@ -205,12 +198,13 @@ void Game :: play1() {
         
         while(1)
         {   
-            cout<<"Enter your move :: ";
+            cout<<"\tEnter your move :: ";
             cin>>row>>column;
             if(isMoveValid(row,column))
                 break;
-            cout<<"Invalid move! Please Re-enter!\n";
+            cout<<"\tInvalid move! Please Re-enter!\n";
         }
+
         gameBoard[row][column] = 2;
         showBoard();
         row--;
@@ -221,7 +215,6 @@ void Game :: play1() {
         }
 
         int temporary = row;
-
         row = row*x - column*y + 1;
         column = column*x + temporary*y + 1;
        
