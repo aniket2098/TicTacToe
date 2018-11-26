@@ -61,38 +61,42 @@ tree* Tree :: createNodes2(tree* head, int* row, int* column) {
 
     head = temp;
 
-    temp = head->link[0];
-    temp->row = row[2];
-    temp->column = column[2];
-    temp->link = new tree* [1];
-    temp->link[0] = new tree;
-    temp = temp->link[0];
-    temp->row = row[5];
-    temp->column = column[5];
-    temp->link = new tree* [1];
-    temp->link[0] = NULL;
+    for(int i = 0; i < 3;i++) {
+     
+        temp = head->link[0 + i];
+        temp->row = row[2 + i];
+        temp->column = column[2 + i];
+        temp->link = new tree* [1 + i];
+        temp->link[0] = new tree;
+        temp = temp->link[0];
+        temp->row = row[5 + i];
+        temp->column = column[5 + i];
+        temp->link = new tree* [1];
+        temp->link[0] = NULL;
+    
+    }
 
-    temp = head->link[1];
-    temp->row = row[3];
-    temp->column = column[3];
-    temp->link = new tree* [1];
-    temp->link[0] = new tree;
-    temp = temp->link[0];
-    temp->row = row[6];
-    temp->column = column[6];
-    temp->link = new tree* [1];
-    temp->link[0] = NULL;
+    // temp = head->link[1];
+    // temp->row = row[3];
+    // temp->column = column[3];
+    // temp->link = new tree* [1];
+    // temp->link[0] = new tree;
+    // temp = temp->link[0];
+    // temp->row = row[6];
+    // temp->column = column[6];
+    // temp->link = new tree* [1];
+    // temp->link[0] = NULL;
 
-    temp = head->link[2];
-    temp->row = row[4];
-    temp->column = column[4];
-    temp->link = new tree* [1];
-    temp->link[0] = new tree;
-    temp = temp->link[0];
-    temp->row = row[7];
-    temp->column = column[7];
-    temp->link = new tree* [1];
-    temp->link[0] = NULL;
+    // temp = head->link[2];
+    // temp->row = row[4];
+    // temp->column = column[4];
+    // temp->link = new tree* [1];
+    // temp->link[0] = new tree;
+    // temp = temp->link[0];
+    // temp->row = row[7];
+    // temp->column = column[7];
+    // temp->link = new tree* [1];
+    // temp->link[0] = NULL;
 
 }
 

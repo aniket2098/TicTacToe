@@ -1,6 +1,8 @@
 #include<bits/stdc++.h>
 #include "Game.h"
 
+#define X (state->row-1)*x - (state->column-1)*(-y)+ 1
+#define Y (state->column-1)*x + (state->row-1)*(-y) + 1
 #define N 3
 
 using namespace std;
@@ -29,8 +31,14 @@ void Game :: initialMove(int player) {
     int row, column, i;
     gameBoard[0][0] = 1;
     showBoard();
-    cout<<"Enter your move :: ";
-    cin>>row>>column;
+    while(1)
+    {   
+        cout<<"Enter your move :: ";
+        cin>>row>>column;
+        if(isMoveValid(row,column))
+            break;
+        cout<<"Invalid move! Please Re-enter!\n";
+    }
     gameBoard[row][column] = 2;    
     showBoard();
     if(column < row)
@@ -77,8 +85,28 @@ void Game :: instructions() {
 
 }
 
+int Game :: displayResult() {
 
+    int result;
+    if(result = gameOver.gameOver()) {
 
+        if(result == 1)
+            cout<<"Computer Wins!\n";
+        else
+            cout<<"Draw!\n";
+        return 1;
+    }
+    return 0;
+}
+
+int Game :: isMoveValid(int row, int column) {
+
+    if(row < N && row >=0 && column < N && column >= 0)
+        if(gameBoard[row][column] == 0)
+            return 1;
+    return 0;
+
+}
 void Game :: randomMove() {
     
     int i, j;
@@ -124,8 +152,14 @@ void Game :: play() {
                 cout<<"Draw!\n";
             break;
         }
-        cout<<"Enter your move :: ";
-        cin>>row>>column;
+        while(1)
+        {   
+            cout<<"Enter your move :: ";
+            cin>>row>>column;
+            if(isMoveValid(row,column))
+                break;
+            cout<<"Invalid move! Please Re-enter!\n";
+    }
         gameBoard[row][column] = 2;
         showBoard();
         if(gameOver.gameOver()) {
@@ -135,57 +169,93 @@ void Game :: play() {
     }
 }
 
+void rotation(int* x, int* y, int row, int column) {
+
+    if(row != 0 || column != 0) {
+
+        if(row == -1 && column <= 0)
+        {
+            *x = 1;
+            *y = 0;
+        }
+        else if(row <= 0 && column == 1) {
+
+            *x = 0;
+            *y = 1;
+        }
+        else if(row == 1 && column >= 0) {
+
+            *x= -1;
+            *y = 0;
+        }
+        else {
+
+            *x = 0;
+            *y =-1;
+        }
+    }
+}
 void Game :: play1() {
 
-    int row, column, i, j, result;
+    int row, column, i, j,tempFlag = 0, x = 1, y = 0;
     state = decisionTree2;
     tree* temp =state;
 
     while(1) {
         
-        cout<<"Enter your move :: ";
-        cin>>row>>column;
-
-        gameBoard[row][column] = 2;
-
-        showBoard();
-
-            if(result = gameOver.gameOver()) {
-
-            if(result == 1)
-                cout<<"Computer Wins!\n";
-            else
-                cout<<"Draw!\n";
-            break;
+        while(1)
+        {   
+            cout<<"Enter your move :: ";
+            cin>>row>>column;
+            if(isMoveValid(row,column))
+                break;
+            cout<<"Invalid move! Please Re-enter!\n";
         }
+        gameBoard[row][column] = 2;
+        showBoard();
+        row--;
+        column--;
+        if(!tempFlag) {
+            tempFlag = 1;
+            rotation(&x, &y, row, column);
+        }
+
+        int temporary = row;
+
+        row = row*x - column*y + 1;
+        column = column*x + temporary*y + 1;
+       
+        if(displayResult())
+            break;
+        
         if(!winning.isWinning(1) && !winning.isWinning(2))
         {
             if(state != NULL && !flag) {
-
                 for(i = 0; i < 3; i++) {
-
                     state = temp->link[i];
                     if(state->row == row && state->column == column)
                         break;
-                    
                 }
-                flag = 1;
-                // state = state->link[i];
+                if(i == 3)
+                {
+                    state = NULL;
+                    randomMove();
+                }
+                else {
+                    state = state->link[0];
+                    gameBoard[X][Y] = 1;
+                    temp = state;
+                    state = temp->link[0];
+                }
             }
-            if(flag && state != NULL) {
-                
-                flag = 0;
-                state = state->link[0];
-                gameBoard[state->row][state->column] = 1;      
-                temp = state; 
-            }
-            else
+            else 
                 randomMove();
-            // gameBoard[state->row][state->column] = 1;
         }
-
+        else
+            flag = 1;
         showBoard();
 
+        if(displayResult())
+            break;
     }
-
 }

@@ -23,4 +23,5 @@ class Game {
         void randomMove();
         void initialMove(int);
         int isMoveValid(int,int);
+        int displayResult();
 };
