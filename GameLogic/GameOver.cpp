@@ -2,13 +2,15 @@
 
 #define N 3
 
-void GameOver :: setGameBoard(int** board) {
+//initializes gameBoard
+void GameOver :: setGameBoard(int** board) {    
 
     gameBoard = board;
 
 }
 
-int GameOver :: gameBoardFull() {
+//checks if all positions are occupied
+int GameOver :: gameBoardFull() {   
 
     for(int i = 0; i < N; i++)
         for(int j = 0; j < N; j++)
@@ -17,13 +19,16 @@ int GameOver :: gameBoardFull() {
     return 3;
 
 }
-int GameOver :: gameOverOrthogonal() {
+
+//checks whether any player has won the game
+//either horizontally or vertically
+int GameOver :: gameOverOrthogonal() {      
 
     int i, j;
 
     for(i = 0; i < N; i++) {
         
-        for(j = 0; j < N-1; j++)
+        for(j = 0; j < N-1; j++)            //checks rows
             if(gameBoard[i][j] == gameBoard[i][j+1] && gameBoard[i][j]!=0)
                 continue;
             else
@@ -31,7 +36,7 @@ int GameOver :: gameOverOrthogonal() {
         if(j == N-1)
             return gameBoard[i][j-1];
         
-        for(j = 0; j < N-1; j++)
+        for(j = 0; j < N-1; j++)            //checks columns
             if(gameBoard[j][i] == gameBoard[j+1][i] && gameBoard[j][i]!=0)
                 continue;
             else 
@@ -44,11 +49,12 @@ int GameOver :: gameOverOrthogonal() {
     return 0;
 }
 
-int GameOver :: gameOverDiagonal() {
+//checks whether a player has won the game diagonally
+int GameOver :: gameOverDiagonal() {        
 
     int i, j;
 
-    for(i = 0; i < N-1; i++)
+    for(i = 0; i < N-1; i++)                //checks diagonal 0 0 to N N
         if(gameBoard[i][i] == gameBoard[i+1][i+1] && gameBoard[i][i]!=0)
             continue;
         else
@@ -56,7 +62,7 @@ int GameOver :: gameOverDiagonal() {
         if(i == N-1)
             return gameBoard[0][0];
     
-    for(i = 0; i < N-1; i++)
+    for(i = 0; i < N-1; i++)                //checks the other diagonal 
         if(gameBoard[i][N-i-1] == gameBoard[i+1][N-i-2] && gameBoard[i][N-i-1]!=0)
             continue;
         else

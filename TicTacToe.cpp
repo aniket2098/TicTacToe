@@ -1,13 +1,15 @@
-#include<bits/stdc++.h>
+//Driver function for the program
 #include "GameLogic/Game.cpp"
 
 int main() {
     
-    Game game;
-    int choice;
-    game.instructions();
+    int choice = 0;
     
-    while(1) {
+    do {
+        
+        Game game;
+        if(!choice) //display instructions for the first time only
+            game.instructions();
         cout<<"\n\tEnter your choice ::\n\n\t1) Computer First\n\t2) Player First\n\t3) Exit\n\n\t";
         cin>>choice;
         switch(choice) {
@@ -24,7 +26,7 @@ int main() {
                 cout<<"\n\t\tWrong choice!\n\t\tPlease Re-enter\n";
                 break;
         }
-    }
+    }while(choice != 3);    //exit if choice = 3
 
     return 0;
 }

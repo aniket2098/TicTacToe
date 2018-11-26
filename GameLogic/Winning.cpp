@@ -5,7 +5,8 @@ void Winning :: setGameBoard(int** board) {
     gameBoard = board; 
 }
 
-int Winning :: isWinningOrthogonal(int player) {
+//Checks if any winning position is available orthogonally
+int Winning :: isWinningOrthogonal(int player) {      
 
     int countHorizontal, countVertical, posHorizontal, posVertical, i, j; 
     
@@ -16,6 +17,7 @@ int Winning :: isWinningOrthogonal(int player) {
         posHorizontal = -1;
         posVertical = -1;
         
+        //count the horizontal and vertical occurences of the players moves
         for(j = 0;j < N; j++) {
             if(gameBoard[i][j] == player)
                 countHorizontal++;
@@ -27,7 +29,7 @@ int Winning :: isWinningOrthogonal(int player) {
                 posVertical = j;
         }
 
-        if(countHorizontal == 2 && posHorizontal!=-1) {
+        if(countHorizontal == 2 && posHorizontal!=-1) {     //if more than two positions belong to the same player
             gameBoard[i][posHorizontal] = 1;
             return 1;
         }
@@ -42,6 +44,7 @@ int Winning :: isWinningOrthogonal(int player) {
     return 0;
 }
 
+//Checks if any winning position is available diagonally
 int Winning :: isWinningDiagonal(int player) {
 
     int countDiagonal1, countDiagonal2, posDiagonal1, posDiagonal2, i, j; 
@@ -51,6 +54,7 @@ int Winning :: isWinningDiagonal(int player) {
     posDiagonal1 = -1;
     posDiagonal2 = -1;
 
+    //count the diagonal occurences of the players moves
     for(i = 0; i < N; i++) {
         
         if(gameBoard[i][i] == player)
@@ -64,7 +68,7 @@ int Winning :: isWinningDiagonal(int player) {
 
     }
 
-    if(countDiagonal1 == 2 && posDiagonal1!=-1) {
+    if(countDiagonal1 == 2 && posDiagonal1!=-1) {       //if more than two positions belong to the same player
         gameBoard[posDiagonal1][posDiagonal1] = 1;
         return 1;
     }

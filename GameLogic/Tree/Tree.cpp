@@ -8,13 +8,14 @@ Tree :: Tree() {
 
 }
 
+//creates the branches of the decision tree for the condition when computer plays first
 tree* Tree :: createNodes1(tree* head,int row1,int column1,int row2,int column2,int row3,int column3) {
 
     tree* temp = head;
     temp->row = row1;
     temp->column = column1;
     temp->link = new tree* [1];
-    temp->link[0] = new tree;
+    temp->link[0] = new tree;       //new node
     temp = temp->link[0];
     temp->row = row2;
     temp->column = column2;
@@ -29,6 +30,10 @@ tree* Tree :: createNodes1(tree* head,int row1,int column1,int row2,int column2,
     temp->link[0] = NULL;
 }
 
+
+//creates the decision tree for computer first moves.
+//the values are calculated based on the logic that only a few moves lead to winning states when played
+//in an optimal way
 void Tree :: createDecisionTree1() {
 
     decisionTree->link = new tree* [5]; 
@@ -44,6 +49,7 @@ void Tree :: createDecisionTree1() {
 
 }
 
+//creates the branches of the decision tree for the condition when player plays first
 tree* Tree :: createNodes2(tree* head, int* row, int* column) {
 
     tree* temp = head;
@@ -61,7 +67,7 @@ tree* Tree :: createNodes2(tree* head, int* row, int* column) {
 
     head = temp;
 
-    for(int i = 0; i < 3;i++) {
+    for(int i = 0; i < 3;i++) {         //three different branches created for each parent branch
      
         temp = head->link[0 + i];
         temp->row = row[2 + i];
@@ -78,6 +84,12 @@ tree* Tree :: createNodes2(tree* head, int* row, int* column) {
 
 }
 
+//creates the decision tree for player first moves.
+//the values are calculated based on the logic that only a few moves are required
+//after which the computer has to either just block the winning position
+//or just play a random move
+//thus avoiding going through thousands of possible solutions
+//and also using symmetry the number of unique scenarios can be reduced drastically
 void Tree :: createDecisionTree2() {
 
     decisionTree2->link = new tree* [3]; 
@@ -85,11 +97,11 @@ void Tree :: createDecisionTree2() {
     for(int i = 0; i <3; i++)
         decisionTree2->link[i] = new tree;
     
-    int row1[8] = {1,0,1,2,2,1,2,0};
-    int column1[8] = {1,0,0,2,0,2,0,1};
-    int row2[8] = {0,1,1,2,2,0,0,2};
+    int row1[8] = {1,0,1,2,2,1,2,0};        //first
+    int column1[8] = {1,0,0,2,0,2,0,1};    
+    int row2[8] = {0,1,1,2,2,0,0,2};        //second
     int column2[8] = {0,1,2,2,1,2,1,0};
-    int row3[8] = {0,1,1,2,2,0,0,0};
+    int row3[8] = {0,1,1,2,2,0,0,0};        //third
     int column3[8] = {1,1,0,0,1,0,0,0};
     createNodes2(decisionTree2->link[0],row1,column1);
     createNodes2(decisionTree2->link[1],row2,column2);
