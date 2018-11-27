@@ -23,7 +23,9 @@ int main() {
             case 3:
                 break;
             default:
-                cout<<"\n\t\tWrong choice!\n\t\tPlease Re-enter\n";
+                cin.clear();
+                cin.ignore(256,'\n');
+                cout<<"\n\tWrong choice!\n\t\tPlease Re-enter\n";
                 break;
         }
     }while(choice != 3);    //exit if choice = 3

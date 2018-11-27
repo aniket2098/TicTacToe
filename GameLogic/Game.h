@@ -23,6 +23,7 @@ class Game {
         void randomMove();
         void initialMove(int);
         void rotation(int*,int*,int,int);
+        void input(int*,int*);
         int isMoveValid(int,int);
         int displayResult();
 };

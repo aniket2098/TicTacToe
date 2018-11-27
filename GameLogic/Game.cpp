@@ -60,14 +60,7 @@ void Game :: computerFirst() {
         showBoard();
         if(displayResult())     //if there is a winner then display result and break
             break;
-        while(1)        //a loop to ascertain whether the position entered is legal or not
-        {   
-            cout<<"\tEnter your move :: ";
-            cin>>row>>column;
-            if(isMoveValid(row,column))
-                break;
-            cout<<"\tInvalid move! Please Re-enter!\n";
-        }
+        input(&row, &column);
         gameBoard[row][column] = 2;
         showBoard(); 
     }
@@ -116,14 +109,7 @@ void Game :: playerFirst() {
 
     while(1) {  //iterate till gameover
         
-        while(1)
-        {   
-            cout<<"\tEnter your move :: ";
-            cin>>row>>column;
-            if(isMoveValid(row,column))
-                break;
-            cout<<"\tInvalid move! Please Re-enter!\n";
-        }
+        input(&row, &column);
 
         gameBoard[row][column] = 2;
         showBoard();
@@ -173,6 +159,25 @@ void Game :: playerFirst() {
     }
 }
 
+void Game :: input(int* row, int* column) {
+
+    while(1)        //a loop to ascertain whether the position entered is legal or not
+        {   
+            cout<<"\tEnter your move :: ";
+            cin>>*row>>*column;
+
+            if(cin.fail()) {        //if input not integer
+                cin.clear();
+                cin.ignore(256,'\n');
+                cout<<"\tInvalid move! Please Re-enter!\n";
+                continue;   
+            }             
+            if(isMoveValid(*row,*column))      //if input greater than grid
+                break;
+            
+            cout<<"\tInvalid move! Please Re-enter!\n";
+        }
+}
 //Displays the GameBoard
 void Game :: showBoard() {      
 
@@ -252,14 +257,7 @@ void Game :: initialMove(int player) {
     int row, column, i;     //variable i is used as a looping variable
     gameBoard[0][0] = 1;    //First move by the computer
     showBoard();
-    while(1)
-    {   
-        cout<<"\tEnter your move :: ";  
-        cin>>row>>column;
-        if(isMoveValid(row,column))     //Check if move is a legal move
-            break;
-        cout<<"\tInvalid move! Please Re-enter!\n";
-    }
+    input(&row, &column);
     gameBoard[row][column] = 2;    
     showBoard();
     if(column < row)    //
